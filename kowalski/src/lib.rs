@@ -23,7 +23,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! kowalski = { version = "0.5.2", features = ["web", "code"] }
+//! kowalski = { version = "0.6.0", features = ["web", "code"] }
 //! ```
 //!
 //! ```rust,no_run
