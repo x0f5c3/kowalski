@@ -16,3 +16,7 @@ db/
 */*/*/*/*/*/*/*/target/
 */*/*/*/*/*/*/*/*/target/
 */*/*/*/*/*/*/*/*/*/target/
+
+# mdbook output
+book/book/
+book/.mdbook-cache/
