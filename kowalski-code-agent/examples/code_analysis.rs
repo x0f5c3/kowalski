@@ -34,23 +34,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Print the analysis result as a string
     println!("\n📊 Analysis Results:\n{}", analysis_result);
 
-    // Remove any for loop or iteration over analysis_result
-
-    // Refactor the code (example, if refactor tool exists)
-    // let refactor_input = ...
-    // let refactored_code = code_agent.chat_with_tools(&conversation_id, refactor_input).await?;
-    // println!("\n📝 Refactored Code:\n{}", refactored_code);
-
-    // Generate documentation (example, if doc tool exists)
-    // let doc_input = ...
-    // let documentation = code_agent.chat_with_tools(&conversation_id, doc_input).await?;
-    // println!("\n📖 Generated Documentation:\n{}", documentation);
-
-    // Search for similar code patterns (example, if search tool exists)
-    // let search_input = ...
-    // let search_results = code_agent.chat_with_tools(&conversation_id, search_input).await?;
-    // println!("\n🔍 Search Results:\n{}", search_results);
-
     // Add analysis results to conversation
     code_agent
         .add_message(
