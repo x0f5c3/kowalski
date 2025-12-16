@@ -252,28 +252,8 @@ impl MemoryProvider for EpisodicBuffer {
     /// Adds a `MemoryUnit` to the RocksDB store.
     ///
     /// The unit is serialized to JSON. The `MemoryUnit.id` is used as the key.
-    async fn add(&mut self, mut memory: MemoryUnit) -> Result<(), KowalskiError> {
-        info!("[EpisodicBuffer] Adding memory unit: {}", memory.id);
-        debug!("Adding memory unit to episodic buffer: {}", memory.id);
-        // If embedding is missing, generate it
-        if memory.embedding.is_none() {
-            match self.get_ollama_embedding(&memory.content).await {
-                Ok(embedding) => memory.embedding = Some(embedding),
-                Err(e) => {
-                    error!("Failed to get embedding for memory {}: {}", memory.id, e);
-                    // Continue without embedding
-                }
-            }
-        }
-        let key = memory.id.clone();
-        let value = serde_json::to_string(&memory).map_err(|e| {
-            error!("Failed to serialize memory unit {}: {}", key, e);
-            KowalskiError::Memory(e.to_string())
-        })?;
-        self.db.put(key.as_bytes(), value.as_bytes()).map_err(|e| {
-            error!("Failed to write to RocksDB for key {}: {}", key, e);
-            KowalskiError::Memory(e.to_string())
-        })
+    async fn add(&mut self, memory: MemoryUnit) -> Result<(), KowalskiError> {
+        self.add_with_embedding(memory).await
     }
 
     /// Retrieves all memory units that contain the query string (case-insensitive).
