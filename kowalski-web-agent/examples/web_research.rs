@@ -25,7 +25,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .await?;
     println!("\n📑 Search Results:\n{}", search_results);
 
-    // Example: Scrape a page (if you have a URL)
+    // Optional: Use the web_scrape tool to extract content from a specific URL
+    // Uncomment the following lines to scrape a web page:
+    //
     // let scrape_input = r#"{"name": "web_scrape", "parameters": {"url": "https://example.com"}}"#;
     // let page_content = web_agent.chat_with_tools(&conversation_id, scrape_input).await?;
     // println!("\n🌐 Page Content:\n{}", page_content);
