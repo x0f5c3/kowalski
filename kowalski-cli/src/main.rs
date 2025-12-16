@@ -327,7 +327,7 @@ async fn repl(manager: AgentManager) -> Result<(), Box<dyn std::error::Error>> {
         let mut parts = input.split_whitespace();
         let cmd = parts.next().unwrap_or("");
         match cmd {
-            "exit" | "quit"| "bye" | "/bye" => {
+            "exit" | "quit" | "bye" | "/bye" => {
                 println!("Exiting Kowalski CLI.");
                 break;
             }
