@@ -37,7 +37,7 @@ kowalski academic --file research.pdf
 Here's a simple example of using Kowalski in your Rust code:
 
 ```rust
-use kowalski_core::{Agent, BaseAgent, Config};
+use kowalski_core::{BaseAgent, Config};
 use kowalski_core::agent::Agent;
 
 #[tokio::main]

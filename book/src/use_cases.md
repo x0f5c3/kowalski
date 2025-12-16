@@ -8,8 +8,8 @@
 
 The paradigm of AI agents—autonomous entities that can reason, plan, and execute tasks—is here. However, the first wave of agent frameworks has revealed significant architectural gaps that prevent their widespread, reliable adoption in mission-critical enterprise environments.
 
-**The core problems are:
-**
+**The core problems are:**
+
 *   **The Performance Ceiling of Python:** The vast majority of AI research and development is done in Python. While excellent for prototyping, Python's Global Interpreter Lock (GIL) creates a fundamental bottleneck for true parallelism. Agentic systems, which are inherently concurrent (e.g., running multiple tools, processing data streams, managing several conversations), cannot scale effectively. We are trying to build the multi-threaded future on a single-threaded foundation.
 
 *   **Pervasive Security & Reliability Issues:** Python's dynamic typing and memory management model leave applications vulnerable to a class of errors that are unacceptable in enterprise systems. An agent that can crash due to a null reference or a memory leak is not an agent you can trust to manage critical infrastructure.
@@ -24,8 +24,8 @@ The paradigm of AI agents—autonomous entities that can reason, plan, and execu
 
 Kowalski is engineered from the ground up to solve these problems. It is not an incremental improvement; it is a foundational shift built on a modern, high-performance language: **Rust**.
 
-**Our technical advantages are clear:
-**
+**Our technical advantages are clear:**
+
 *   **Fearless Concurrency & Elite Performance:** Rust was built for concurrency. With its ownership model and async/await syntax, Kowalski can run thousands of tasks in parallel without data races. This allows a single Kowalski instance to manage multiple agents, run numerous tools simultaneously, and process high-throughput data streams—achieving a level of performance that is an order of magnitude beyond what Python-based frameworks can offer.
 
 *   **Rock-Solid Security & Reliability:** Rust's compiler guarantees memory safety and thread safety. This eliminates entire categories of common bugs (null pointer dereferences, buffer overflows, etc.) at compile time. For an AI agent, this means unparalleled stability. A Kowalski agent is an agent you can deploy with confidence to manage sensitive, long-running, and critical tasks.
