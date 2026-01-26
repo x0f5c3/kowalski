@@ -41,27 +41,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         )
         .await;
 
-    // Process the first search result in detail
-    // The original code had a loop over search_results, but the new code directly prints the result.
-    // Assuming the intent was to process the first result if search_results was a vector of results.
-    // Since search_results is now a string, we'll just print it.
-    // If the intent was to process a single result from a vector, the original code would need to be adapted.
-    // For now, we'll just print the search_results string.
-    println!(
-        "\n🌐 Processing search results (as a string): {}",
-        search_results
-    );
-
-    // The original code had a detailed processing of the first result, including page fetching and summary generation.
-    // This part of the logic needs to be re-evaluated based on the new `search_results` format.
-    // For now, we'll remove the detailed processing as the `search_results` is now a string.
-    // If the intent was to process a single result from a vector, the original code would need to be adapted.
-    // For now, we'll just print the search_results string.
-    // The original code had a detailed processing of the first result, including page fetching and summary generation.
-    // This part of the logic needs to be re-evaluated based on the new `search_results` format.
-    // For now, we'll remove the detailed processing as the `search_results` is now a string.
-    // If the intent was to process a single result from a vector, the original code would need to be adapted.
-    // For now, we'll just print the search_results string.
+    // Display the search results
+    println!("\n🌐 Processing search results: {}", search_results);
 
     Ok(())
 }
