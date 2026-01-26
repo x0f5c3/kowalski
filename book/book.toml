@@ -1,0 +1,32 @@
+[book]
+title = "Kowalski Documentation"
+authors = ["Kowalski Contributors"]
+description = "Documentation for Kowalski - A sophisticated Rust-based multi-agent framework"
+language = "en"
+src = "src"
+
+[build]
+build-dir = "book"
+create-missing = false
+
+[output.html]
+default-theme = "rust"
+preferred-dark-theme = "navy"
+git-repository-url = "https://github.com/yarenty/kowalski"
+edit-url-template = "https://github.com/yarenty/kowalski/edit/main/book/{path}"
+site-url = "/kowalski/"
+
+[output.html.fold]
+enable = true
+level = 0
+
+[output.html.search]
+enable = true
+limit-results = 30
+teaser-word-count = 30
+use-boolean-and = true
+boost-title = 2
+boost-hierarchy = 1
+boost-paragraph = 1
+expand = true
+heading-split-level = 3

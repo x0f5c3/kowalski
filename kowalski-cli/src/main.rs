@@ -1,5 +1,4 @@
 use clap::Parser;
-use env_logger;
 use futures::StreamExt;
 use kowalski_academic_agent::AcademicAgent;
 use kowalski_code_agent::CodeAgent;
@@ -14,6 +13,8 @@ use std::collections::HashMap;
 use std::io::{self, Write};
 use std::sync::Arc;
 use tokio::sync::RwLock;
+
+use kowalski_core::memory::consolidation::{Consolidator, MemoryWeaver};
 
 #[derive(Parser, Debug)]
 #[clap(author, version, about, long_about = None)]
@@ -59,6 +60,11 @@ enum Commands {
     List,
     /// List active agents
     Agents,
+    /// Consolidate memory - move from episodic history into semantic memory
+    Consolidate {
+        #[clap(long)]
+        delete: bool,
+    },
 }
 
 struct AgentManager {
@@ -197,6 +203,24 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
         Some(Commands::List) => list_agents()?,
         Some(Commands::Agents) => manager.list_agents().await?,
+        Some(Commands::Consolidate { delete }) => {
+            let config = Config::default();
+            let episodic_path = &config.memory.episodic_path;
+            let qdrant_url = &config.qdrant.http_url;
+            let ollama_host = &config.ollama.host;
+            let ollama_port = config.ollama.port;
+            let ollama_model = &config.ollama.model;
+            let mut weaver = Consolidator::new(
+                episodic_path,
+                qdrant_url,
+                ollama_host,
+                ollama_port,
+                ollama_model,
+            )
+            .await?;
+            weaver.run(delete).await?;
+            println!("Memory consolidation complete.");
+        }
         None => {
             // Enter REPL mode if no subcommand is provided
             println!("Kowalski CLI Interactive Mode. Type 'help' for commands.");
@@ -245,8 +269,8 @@ async fn chat_with_tools(
     input: &str,
 ) -> Result<(), Box<dyn std::error::Error>> {
     // Use the agent's chat_with_tools method directly
-    let response = agent.chat_with_tools(conv_id, input).await?;
-    print!("{}", response);
+    let _response = agent.chat_with_tools(conv_id, input).await?;
+    // print!("{}", response); //this was already printed in chat_with_tools
     io::stdout().flush()?;
     Ok(())
 }
@@ -303,7 +327,7 @@ async fn repl(manager: AgentManager) -> Result<(), Box<dyn std::error::Error>> {
         let mut parts = input.split_whitespace();
         let cmd = parts.next().unwrap_or("");
         match cmd {
-            "exit" | "quit" => {
+            "exit" | "quit" | "bye" | "/bye" => {
                 println!("Exiting Kowalski CLI.");
                 break;
             }
@@ -313,7 +337,7 @@ async fn repl(manager: AgentManager) -> Result<(), Box<dyn std::error::Error>> {
                 println!("  chat <name>: Chat with an agent");
                 println!("  list: List available agent types");
                 println!("  agents: List active agents");
-                println!("  exit | quit: Exit the CLI");
+                println!("  bye | /bye : Exit the CLI");
             }
             "create" => {
                 let agent_type = parts.next();

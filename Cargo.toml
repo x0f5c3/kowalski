@@ -3,20 +3,18 @@ resolver = "3"
 members = [
     "kowalski",
     "kowalski-core",
-    "kowalski-agent-template",
     "kowalski-tools",
     "kowalski-academic-agent",
     "kowalski-web-agent",
     "kowalski-code-agent",
     "kowalski-data-agent",
     "kowalski-federation",
-    "kowalski-cli",
-    "kowalski-memory"
+    "kowalski-cli"
 ]
 
 
 [workspace.package]
-version = "0.5.2"
+version = "0.6.0"
 edition = "2024"
 description = "A Rust-based agent for interacting with Ollama models"
 license = "MIT"
