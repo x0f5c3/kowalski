@@ -269,8 +269,8 @@ async fn chat_with_tools(
     input: &str,
 ) -> Result<(), Box<dyn std::error::Error>> {
     // Use the agent's chat_with_tools method directly
-    let _response = agent.chat_with_tools(conv_id, input).await?;
-    // print!("{}", response); //this was already printed in chat_with_tools
+    let response = agent.chat_with_tools(conv_id, input).await?;
+    println!("{}", response);
     io::stdout().flush()?;
     Ok(())
 }

@@ -4,9 +4,7 @@
 //! It acts as a facade, re-exporting functionality from the other crates in the `kowalski` workspace.
 //!
 //! ## Core Components
-//! - **Core**: Basic agent infrastructure and types (`kowalski-core`)
-//! - **Memory**: Multi-tiered memory system (`kowalski-memory`)
-//! - **Agent Template**: Templates for building custom agents (`kowalski-agent-template`)
+//! - **Core**: Basic agent infrastructure, types, memory, and templates (`kowalski-core`)
 //! - **Tools**: Various tools for web scraping, data processing, and more (`kowalski-tools`)
 //!
 //! ## Optional Features (Specialized Agents and more)

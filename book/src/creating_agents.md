@@ -15,21 +15,19 @@ An agent in Kowalski is composed of:
 The `TemplateAgent` is the recommended way to create agents:
 
 ```rust
-use kowalski_core::template::{TemplateAgent, DefaultTemplate};
+use kowalski_core::template::default::DefaultTemplate;
 use kowalski_core::config::Config;
-use kowalski_tools::Tool;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let config = Config::default();
-    
     // Create agent with default template
-    let template = DefaultTemplate::new(
-        "My Agent",
-        "You are a helpful assistant specialized in Rust programming."
-    );
+    let builder = DefaultTemplate::create_agent(
+        Vec::new(), // tools
+        Some("You are a helpful assistant specialized in Rust programming.".to_string()),
+        Some(0.7), // temperature
+    ).await?;
     
-    let mut agent = TemplateAgent::new(config, template).await?;
+    let mut agent = builder.build().await?;
     
     // Use the agent
     let conv_id = agent.start_conversation("llama3.2");

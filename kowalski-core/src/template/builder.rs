@@ -69,15 +69,14 @@ impl AgentBuilder {
 
     /// Builds the final agent
     pub async fn build(self) -> Result<TemplateAgent, KowalskiError> {
-        // Configure base agent
-        // let mut base = self.base;
-        // base.set_temperature(self.temperature);
-        // if !self.system_prompt.is_empty() {
-        //     base.set_system_prompt(&self.system_prompt);
-        // }
-
         // Create template agent
-        let agent = TemplateAgent::new(Config::default()).await?;
+        let mut agent = TemplateAgent::new(Config::default()).await?;
+
+        // Apply builder settings to the base agent
+        agent.base_mut().set_temperature(self.temperature);
+        if !self.system_prompt.is_empty() {
+            agent.base_mut().set_system_prompt(&self.system_prompt);
+        }
 
         // Register tools
         for tool in self.tools {
