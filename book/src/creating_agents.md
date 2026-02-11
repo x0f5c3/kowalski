@@ -16,7 +16,6 @@ The `TemplateAgent` is the recommended way to create agents:
 
 ```rust
 use kowalski_core::template::default::DefaultTemplate;
-use kowalski_core::config::Config;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
