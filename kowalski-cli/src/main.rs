@@ -269,8 +269,8 @@ async fn chat_with_tools(
     input: &str,
 ) -> Result<(), Box<dyn std::error::Error>> {
     // Use the agent's chat_with_tools method directly
-    let response = agent.chat_with_tools(conv_id, input).await?;
-    println!("{}", response);
+    // Note: BaseAgent's default implementation already prints streamed tokens to stdout
+    let _response = agent.chat_with_tools(conv_id, input).await?;
     io::stdout().flush()?;
     Ok(())
 }
