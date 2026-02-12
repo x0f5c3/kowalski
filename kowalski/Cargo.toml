@@ -44,7 +44,7 @@ name = "kowalski"
 path = "src/lib.rs"
 
 [features]
-default = ["academic", "code", "data", "web"]
+default = []
 
 # Agent features
 academic = ["kowalski-academic-agent"]

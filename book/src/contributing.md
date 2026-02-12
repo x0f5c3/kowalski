@@ -269,9 +269,13 @@ mod tests {
 
     #[tokio::test]
     async fn test_agent_creation() {
-        let config = Config::default();
-        let template = DefaultTemplate::new("Test", "Test agent");
-        let agent = TemplateAgent::new(config, template).await;
+        let builder = DefaultTemplate::create_agent(
+            Vec::new(),
+            Some("Test agent".to_string()),
+            None,
+        ).await;
+        assert!(builder.is_ok());
+        let agent = builder.unwrap().build().await;
         assert!(agent.is_ok());
     }
 

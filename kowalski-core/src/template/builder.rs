@@ -1,4 +1,3 @@
-use crate::agent::BaseAgent;
 use crate::config::Config;
 use crate::error::KowalskiError;
 use crate::template::agent::TaskHandler;
@@ -11,7 +10,6 @@ use tokio::sync::RwLock;
 
 #[allow(dead_code)]
 pub struct AgentBuilder {
-    base: BaseAgent,
     config: TemplateAgentConfig,
     tool_chain: Arc<RwLock<Vec<Box<dyn Tool + Send + Sync>>>>,
     task_handlers: Arc<RwLock<HashMap<String, Box<dyn TaskHandler>>>>,
@@ -24,16 +22,8 @@ impl AgentBuilder {
     /// Creates a new AgentBuilder with default configuration
     pub async fn new() -> Self {
         let config = TemplateAgentConfig::default();
-        let base = BaseAgent::new(
-            Config::default(),
-            "Template Agent",
-            "A base implementation for building specialized agents",
-        )
-        .await
-        .expect("Failed to create base agent");
 
         Self {
-            base,
             config,
             tool_chain: Arc::new(RwLock::new(Vec::new())),
             task_handlers: Arc::new(RwLock::new(HashMap::new())),
@@ -69,15 +59,14 @@ impl AgentBuilder {
 
     /// Builds the final agent
     pub async fn build(self) -> Result<TemplateAgent, KowalskiError> {
-        // Configure base agent
-        // let mut base = self.base;
-        // base.set_temperature(self.temperature);
-        // if !self.system_prompt.is_empty() {
-        //     base.set_system_prompt(&self.system_prompt);
-        // }
-
         // Create template agent
-        let agent = TemplateAgent::new(Config::default()).await?;
+        let mut agent = TemplateAgent::new(Config::default()).await?;
+
+        // Apply builder settings to the base agent
+        agent.base_mut().set_temperature(self.temperature);
+        if !self.system_prompt.is_empty() {
+            agent.base_mut().set_system_prompt(&self.system_prompt);
+        }
 
         // Register tools
         for tool in self.tools {

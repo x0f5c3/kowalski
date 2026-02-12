@@ -71,10 +71,7 @@ When you have a final answer, respond normally without JSON formatting. NEVER gi
             available_tools_section
         );
         let system_prompt_clone = system_prompt.clone();
-        println!(
-            "[DEBUG] System prompt sent to LLM:\n{}",
-            system_prompt_clone
-        );
+        tracing::debug!("System prompt sent to LLM:\n{}", system_prompt_clone);
 
         let builder = DefaultTemplate::create_agent(tools, Some(system_prompt), Some(0.7))
             .await

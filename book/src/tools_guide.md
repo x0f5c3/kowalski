@@ -35,8 +35,8 @@ All tools implement the `Tool` trait:
 pub trait Tool: Send + Sync {
     fn name(&self) -> &str;
     fn description(&self) -> &str;
-    fn parameters(&self) -> Value;
-    async fn execute(&self, params: Value) -> Result<String, KowalskiError>;
+    fn parameters(&self) -> Vec<ToolParameter>;
+    async fn execute(&mut self, input: ToolInput) -> Result<ToolOutput, KowalskiError>;
 }
 ```
 
