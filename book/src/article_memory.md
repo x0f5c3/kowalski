@@ -1,6 +1,6 @@
-# Beyond Chat History: Building Human-Like Memory for AI Agents with `kowalski-memory`
+# Beyond Chat History: Building Human-Like Memory for AI Agents with 
 
-How do you give an AI agent a memory that’s more than just a chat log? This question led to the creation of `kowalski-memory`, a Rust-based, multi-tiered memory system for agentic AI. Let’s take a journey through the philosophy, technical architecture, and the real-world challenges of building a memory system that doesn’t just store data, but learns, forgets, and grows—much like we do.
+How do you give an AI agent a memory that’s more than just a chat log? This question led to the creation of the memory system in `kowalski-core::memory`, a Rust-based, multi-tiered memory system for agentic AI. Let’s take a journey through the philosophy, technical architecture, and the real-world challenges of building a memory system that doesn’t just store data, but learns, forgets, and grows—much like we do.
 
 ---
 
@@ -8,7 +8,7 @@ How do you give an AI agent a memory that’s more than just a chat log? This qu
 
 Imagine talking to someone who forgets everything the moment you stop speaking. That’s how most AI agents operate today. They might remember the last message or two, or keep a raw log of your conversations, but they lack the ability to recall, summarize, and learn from experience. Real intelligence, whether human or artificial, is about more than just storage—it’s about the *management* of memory: what to keep, what to forget, and how to transform fleeting experience into lasting knowledge.
 
-Inspired by cognitive science, `kowalski-memory` is built around the idea of a multi-tiered memory architecture. Each tier is designed for a specific function, echoing the layers of human memory: working memory for the present, episodic memory for recent events, and semantic memory for distilled knowledge.
+Inspired by cognitive science, the memory system in `kowalski-core::memory` is built around the idea of a multi-tiered memory architecture. Each tier is designed for a specific function, echoing the layers of human memory: working memory for the present, episodic memory for recent events, and semantic memory for distilled knowledge.
 - **Working Memory**: What the agent is thinking about right now  
 - **Episodic Memory**: A detailed log of recent events  
 - **Semantic Memory**: A structured, searchable library of distilled knowledge

@@ -35,11 +35,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("\n📊 Analysis Results:\n{}", analysis_result);
 
     // Add analysis results to conversation
+    let analysis_message = format!("Code analysis results: {}", analysis_result);
     code_agent
         .add_message(
             &conversation_id,
             "analysis",
-            format!("Code analysis results: {}", analysis_result).as_str(),
+            &analysis_message,
         )
         .await;
 

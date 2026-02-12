@@ -45,13 +45,13 @@ pub trait Tool: Send + Sync {
 ### Registering Tools
 
 ```rust
-use kowalski_core::template::TemplateAgent;
+use kowalski_core::template::default::DefaultTemplate;
 use kowalski_tools::web::WebSearchTool;
 
-let mut agent = TemplateAgent::new(config.clone(), template).await?;
-
-// Register a tool
-agent.register_tool(Box::new(WebSearchTool::new(config.clone())));
+// Create agent with tools using DefaultTemplate
+let tools = vec![Box::new(WebSearchTool::new(config.clone()))];
+let builder = DefaultTemplate::create_agent(tools, None, None).await?;
+let mut agent = builder.build().await?;
 ```
 
 ### Tool Invocation
@@ -76,15 +76,20 @@ You can also execute tools directly:
 
 ```rust
 use kowalski_tools::web::WebSearchTool;
+use kowalski_core::tools::{ToolInput, ToolOutput};
 use serde_json::json;
 
-let tool = WebSearchTool::new(config);
-let params = json!({
-    "query": "Rust async programming"
-});
+let mut tool = WebSearchTool::new(config);
+let input = ToolInput::new(
+    "web_search".to_string(),
+    "Rust async programming".to_string(),
+    json!({
+        "query": "Rust async programming"
+    })
+);
 
-let results = tool.execute(params).await?;
-println!("Search results: {}", results);
+let output = tool.execute(input).await?;
+println!("Search results: {:?}", output.result);
 ```
 
 ## Creating Custom Tools
@@ -92,10 +97,10 @@ println!("Search results: {}", results);
 Implement the `Tool` trait to create custom tools:
 
 ```rust
-use kowalski_core::tool::Tool;
+use kowalski_core::tools::{Tool, ToolParameter, ToolInput, ToolOutput, ParameterType};
 use kowalski_core::error::KowalskiError;
 use async_trait::async_trait;
-use serde_json::{json, Value};
+use serde_json::json;
 
 pub struct CalculatorTool;
 
@@ -109,29 +114,34 @@ impl Tool for CalculatorTool {
         "Performs basic arithmetic operations"
     }
     
-    fn parameters(&self) -> Value {
-        json!({
-            "type": "object",
-            "properties": {
-                "operation": {
-                    "type": "string",
-                    "enum": ["add", "subtract", "multiply", "divide"],
-                    "description": "The operation to perform"
-                },
-                "a": {
-                    "type": "number",
-                    "description": "First operand"
-                },
-                "b": {
-                    "type": "number",
-                    "description": "Second operand"
-                }
+    fn parameters(&self) -> Vec<ToolParameter> {
+        vec![
+            ToolParameter {
+                name: "operation".to_string(),
+                description: "The operation to perform (add, subtract, multiply, divide)".to_string(),
+                required: true,
+                default_value: None,
+                parameter_type: ParameterType::String,
             },
-            "required": ["operation", "a", "b"]
-        })
+            ToolParameter {
+                name: "a".to_string(),
+                description: "First operand".to_string(),
+                required: true,
+                default_value: None,
+                parameter_type: ParameterType::Number,
+            },
+            ToolParameter {
+                name: "b".to_string(),
+                description: "Second operand".to_string(),
+                required: true,
+                default_value: None,
+                parameter_type: ParameterType::Number,
+            },
+        ]
     }
     
-    async fn execute(&self, params: Value) -> Result<String, KowalskiError> {
+    async fn execute(&mut self, input: ToolInput) -> Result<ToolOutput, KowalskiError> {
+        let params = input.parameters;
         let operation = params["operation"].as_str()
             .ok_or_else(|| KowalskiError::ToolError("Missing operation".to_string()))?;
         
@@ -154,7 +164,7 @@ impl Tool for CalculatorTool {
             _ => return Err(KowalskiError::ToolError("Unknown operation".to_string())),
         };
         
-        Ok(format!("Result: {}", result))
+        Ok(ToolOutput::new(json!({"result": result}), None))
     }
 }
 ```
