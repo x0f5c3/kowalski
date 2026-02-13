@@ -44,22 +44,29 @@ Tools extend agent capabilities:
 
 ```rust
 use kowalski_tools::web::{WebSearchTool, WebScrapeTool};
-use kowalski_core::template::TemplateAgent;
+use kowalski_core::template::default::DefaultTemplate;
+use kowalski_core::config::Config;
 
-async fn create_web_agent() -> Result<TemplateAgent<DefaultTemplate>, Box<dyn std::error::Error>> {
+async fn create_web_agent() -> Result<(), Box<dyn std::error::Error>> {
     let config = Config::default();
-    let template = DefaultTemplate::new(
-        "Web Agent",
-        "You are a web research assistant."
-    );
-    
-    let mut agent = TemplateAgent::new(config.clone(), template).await?;
-    
-    // Register tools
-    agent.register_tool(Box::new(WebSearchTool::new(config.clone())));
-    agent.register_tool(Box::new(WebScrapeTool::new(config.clone())));
-    
-    Ok(agent)
+
+    // Define tools for the agent
+    let tools = vec![
+        Box::new(WebSearchTool::new(config.clone())),
+        Box::new(WebScrapeTool::new(config.clone())),
+    ];
+
+    // Create agent with template and tools
+    let builder = DefaultTemplate::create_agent(
+        tools,
+        Some("You are a web research assistant.".to_string()),
+        None, // optional temperature
+    ).await?;
+
+    let mut agent = builder.build().await?;
+
+    // Agent is now ready to use with web tools registered
+    Ok(())
 }
 ```
 

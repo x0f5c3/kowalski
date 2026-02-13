@@ -34,20 +34,17 @@ pub trait Tool: Send + Sync {
 }
 ```
 
-### Template Trait
+### Templates
 
-The `Template` trait for creating agent templates:
+Kowalski provides a template system for configuring agents, built around the `DefaultTemplate`
+type and the `AgentBuilder` API from `kowalski_core::template`.
 
-```rust
-pub trait Template: Send + Sync {
-    fn name(&self) -> &str;
-    fn description(&self) -> &str;
-    fn system_prompt(&self) -> String;
-    fn additional_instructions(&self) -> Option<String> {
-        None
-    }
-}
-```
+`DefaultTemplate` represents a reusable approach for creating agents with specific configurations
+(for example, system prompts, tools, and temperature), while `AgentBuilder` is used to construct 
+agents from templates and other options.
+
+For the most up-to-date details, refer to the Rust documentation for
+`kowalski_core::template::default::DefaultTemplate` and `kowalski_core::template::builder::AgentBuilder`.
 
 ### Memory Traits
 
@@ -55,11 +52,12 @@ Memory provider interface:
 
 ```rust
 #[async_trait]
-pub trait MemoryProvider: Send + Sync {
+pub trait MemoryProvider {
     async fn add(&mut self, memory: MemoryUnit) -> Result<(), KowalskiError>;
-    async fn retrieve(&self, query: &str, limit: usize) 
+    async fn retrieve(&self, query: &str, retrieval_limit: usize) 
         -> Result<Vec<MemoryUnit>, KowalskiError>;
-    async fn clear(&mut self) -> Result<(), KowalskiError>;
+    async fn search(&self, query: MemoryQuery) 
+        -> Result<Vec<MemoryUnit>, KowalskiError>;
 }
 ```
 
@@ -93,8 +91,8 @@ pub struct OllamaConfig {
 }
 
 pub struct QdrantConfig {
-    pub url: String,
-    pub collection: String,
+    pub http_url: String,
+    pub grpc_url: String,
 }
 
 pub struct MemoryConfig {

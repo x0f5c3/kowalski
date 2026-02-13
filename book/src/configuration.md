@@ -21,8 +21,8 @@ port = 11434
 model = "llama3.2"
 
 [qdrant]
-url = "http://localhost:6333"
-collection = "kowalski_memory"
+http_url = "http://localhost:6333"
+grpc_url = "http://localhost:6334"
 
 [memory]
 episodic_path = "./target/episodic_db"
@@ -61,17 +61,11 @@ Configure the Qdrant vector database for semantic memory:
 
 ```toml
 [qdrant]
-# Qdrant server URL
-url = "http://localhost:6333"
+# Qdrant HTTP server URL
+http_url = "http://localhost:6333"
 
-# Collection name for storing embeddings
-collection = "kowalski_memory"
-
-# Optional: Vector size (must match embedding model)
-vector_size = 384
-
-# Optional: Distance metric
-distance = "Cosine"
+# Qdrant gRPC server URL
+grpc_url = "http://localhost:6334"
 ```
 
 ### Memory Configuration
@@ -163,8 +157,11 @@ export KOWALSKI_OLLAMA_HOST="192.168.1.100"
 # Override model
 export KOWALSKI_OLLAMA_MODEL="llama3.1"
 
-# Override Qdrant URL
-export KOWALSKI_QDRANT_URL="http://vectordb:6333"
+# Override Qdrant HTTP URL
+export KOWALSKI_QDRANT_HTTP_URL="http://vectordb:6333"
+
+# Override Qdrant gRPC URL
+export KOWALSKI_QDRANT_GRPC_URL="http://vectordb:6334"
 ```
 
 Environment variable naming convention:
@@ -188,7 +185,7 @@ let config = Config::from_file("my_config.toml")?;
 
 // Access configuration values
 println!("Model: {}", config.ollama.model);
-println!("Qdrant URL: {}", config.qdrant.url);
+println!("Qdrant HTTP URL: {}", config.qdrant.http_url);
 ```
 
 ### Creating Configuration Programmatically
@@ -204,8 +201,8 @@ let config = Config {
         ..Default::default()
     },
     qdrant: QdrantConfig {
-        url: "http://localhost:6333".to_string(),
-        collection: "my_collection".to_string(),
+        http_url: "http://localhost:6333".to_string(),
+        grpc_url: "http://localhost:6334".to_string(),
         ..Default::default()
     },
     memory: MemoryConfig {
@@ -255,10 +252,8 @@ temperature = 0.7
 max_tokens = 2048
 
 [qdrant]
-url = "http://localhost:6333"
-collection = "kowalski_semantic"
-vector_size = 384
-distance = "Cosine"
+http_url = "http://localhost:6333"
+grpc_url = "http://localhost:6334"
 
 [memory]
 episodic_path = "./data/episodic"

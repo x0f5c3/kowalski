@@ -103,8 +103,12 @@ pub struct MemoryConfig {
 
 impl Default for MemoryConfig {
     fn default() -> Self {
+        let episodic_path = dirs::home_dir()
+            .map(|home| home.join(".kowalski/episodic_db").to_string_lossy().to_string())
+            .unwrap_or_else(|| ".kowalski/episodic_db".to_string());
+        
         Self {
-            episodic_path: "~/.kowalski/episodic_db".to_string(), // default to user home directory; expand '~' at runtime if needed
+            episodic_path,
             additional: HashMap::new(),
         }
     }

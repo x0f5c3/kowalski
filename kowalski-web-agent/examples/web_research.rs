@@ -33,11 +33,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // println!("\n🌐 Page Content:\n{}", page_content);
 
     // Add search query to conversation
+    let search_query = format!("Search for {} and provide a summary", "AI");
     web_agent
         .add_message(
             &conversation_id,
             "user",
-            format!("Search for {} and provide a summary", "AI").as_str(),
+            &search_query,
         )
         .await;
 
