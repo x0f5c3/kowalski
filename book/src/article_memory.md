@@ -1,6 +1,6 @@
 # Beyond Chat History: Building Human-Like Memory for AI Agents
 
-How do you give an AI agent a memory that’s more than just a chat log? This question led to the creation of the memory system in `kowalski-core::memory`, a Rust-based, multi-tiered memory system for agentic AI. Let’s take a journey through the philosophy, technical architecture, and the real-world challenges of building a memory system that doesn’t just store data, but learns, forgets, and grows—much like we do.
+How do you give an AI agent a memory that’s more than just a chat log? This question led to the creation of the memory system in `kowalski_core::memory`, a Rust-based, multi-tiered memory system for agentic AI. Let’s take a journey through the philosophy, technical architecture, and the real-world challenges of building a memory system that doesn’t just store data, but learns, forgets, and grows—much like we do.
 
 ---
 

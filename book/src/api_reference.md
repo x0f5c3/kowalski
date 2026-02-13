@@ -44,7 +44,7 @@ type and the `AgentBuilder` API from `kowalski_core::template`.
 agents from templates and other options.
 
 For the most up-to-date details, refer to the Rust documentation for
-`kowalski_core::template::DefaultTemplate` and `kowalski_core::template::builder::AgentBuilder`.
+`kowalski_core::template::default::DefaultTemplate` and `kowalski_core::template::builder::AgentBuilder`.
 
 ### Memory Traits
 
@@ -52,7 +52,7 @@ Memory provider interface:
 
 ```rust
 #[async_trait]
-pub trait MemoryProvider: Send + Sync {
+pub trait MemoryProvider {
     async fn add(&mut self, memory: MemoryUnit) -> Result<(), KowalskiError>;
     async fn retrieve(&self, query: &str, retrieval_limit: usize) 
         -> Result<Vec<MemoryUnit>, KowalskiError>;

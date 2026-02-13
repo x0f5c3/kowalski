@@ -76,7 +76,7 @@ You can also execute tools directly:
 
 ```rust
 use kowalski_tools::web::WebSearchTool;
-use kowalski_core::tools::{ToolInput, ToolOutput};
+use kowalski_core::tools::ToolInput;
 use serde_json::json;
 
 let mut tool = WebSearchTool::new(config);
